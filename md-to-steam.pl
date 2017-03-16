@@ -71,6 +71,7 @@ while (<>)
     s/(?!\[)[\*_][\*_](.*?)[\*_][\*_]/\[b\]$1\[\/b\]/; # Bold text
     s/(?!\[)[\*_](.*?)[\*_]/\[i\]$1\[\/i\]/; # Italic text
     s/(?!``)`(.*?)`/\[i\]$1\[\/i\]/; # There are no inline codetags in steam's markup so I use italic instead
+    s/~~(.*?)~~/\[strike\]$1\[\/strike\]/; # Strike out
 
     print;
 }
