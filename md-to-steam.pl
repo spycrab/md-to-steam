@@ -33,10 +33,16 @@ while (<>)
         $quote = 0;
     }
 
-    unless(m/^ *\* /)
+    unless (m/^ *\* /)
     {
         say '[/list]' if ($ulist);
         $ulist = 0;
+    }
+
+    unless (m/^ *[0-9]+\. /)
+    {
+        say '[/olist]' if ($olist);
+        $olist = 0;
     }
 
     # begin tags
@@ -46,6 +52,12 @@ while (<>)
         $ulist = 1;
     }
 
+    if (m/^ *[0-9]+\. /)
+    {
+        say '[olist]' if (not $olist);
+        $olist = 1;
+    }
+
     if (m/^> /)
     {
         say '[quote]' if (not $quote);
@@ -53,6 +65,7 @@ while (<>)
     }
 
     s/^ *\*/[\*]/; # List items
+    s/^ *[0-9]+\. (.*)/[\*] $1/; # Ordered list items
     s/^> //; # Quote markers
     s/^#+ (.*)/\[h1\]$1\[\/h1\]/; # Headings
     s/(?!\[)[\*_][\*_](.*?)[\*_][\*_]/\[b\]$1\[\/b\]/; # Bold text
