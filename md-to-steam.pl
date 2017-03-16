@@ -14,10 +14,18 @@ use strict;
 use warnings;
 use v5.10;
 
-my ($ulist,$olist,$quote) = (0,0,0);
+my ($ulist,$olist,$quote,$code) = (0,0,0,0);
 
 while (<>)
 {
+    # both
+    if (m/```.*?/)
+    {
+        say '[code]' if (not $code);
+        say '[/code]' if ($code);
+        $code = !$code;
+    }
+    
     # end tags
     unless (m/^> /)
     {
@@ -25,14 +33,14 @@ while (<>)
         $quote = 0;
     }
 
-    unless(m/^ *\*/)
+    unless(m/^ *\* /)
     {
         say '[/list]' if ($ulist);
         $ulist = 0;
     }
 
     # begin tags
-    if (m/^ *\*/)
+    if (m/^ *\* /)
     {
         say '[list]' if (not $ulist);
         $ulist = 1;
@@ -49,6 +57,7 @@ while (<>)
     s/^#+ (.*)/\[h1\]$1\[\/h1\]/; # Headings
     s/(?!\[)[\*_][\*_](.*?)[\*_][\*_]/\[b\]$1\[\/b\]/; # Bold text
     s/(?!\[)[\*_](.*?)[\*_]/\[i\]$1\[\/i\]/; # Italic text
+    s/(?!``)`(.*?)`/\[i\]$1\[\/i\]/; # There are no inline codetags in steam's markup so I use italic instead
 
     print;
 }
