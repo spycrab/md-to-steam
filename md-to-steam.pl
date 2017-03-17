@@ -22,6 +22,7 @@ while (<>)
         if (not $code) { say '[code]'; }
         else           { say '[/code]'; }
         $code = !$code;
+        next;
     }
     
     # end tags
