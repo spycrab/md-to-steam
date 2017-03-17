@@ -34,17 +34,15 @@ while (<>)
     if (m/^ *\* /)
     {
         my $tab_len = length((split('\* ', $_))[0])/2+1;
-        say '[/list]' if ($ulist > $tab_len);
-        say '[list]' if ($ulist < $tab_len);
-        $ulist = $tab_len;
+        while ($ulist > $tab_len) { say '[/list]'; $ulist--; }
+        while ($ulist < $tab_len) { say '[list]'; $ulist++; }
     }
 
     if (m/^ *[0-9]+\. /)
     {
         my $tab_len = length((split('[0-9]+\.', $_))[0])/2+1;
-        say '[/olist]' if ($olist > $tab_len);
-        say '[olist]' if ($olist < $tab_len);
-        $olist = $tab_len;
+        while ($olist > $tab_len) { say '[/olist]'; $olist--; }
+        while ($olist < $tab_len) { say '[olist]'; $olist++; }
     }
 
     if (m/^> /)
