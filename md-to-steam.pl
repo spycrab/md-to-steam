@@ -6,9 +6,8 @@
 # TODO:
 # Add link support
 # Add image support
-# Add file option
+# Add file input option
 # Add quiet option
-# Add nested list (indented list) support
 
 use strict;
 use warnings;
@@ -48,14 +47,18 @@ while (<>)
     # begin tags
     if (m/^ *\* /)
     {
-        say '[list]' if (not $ulist);
-        $ulist = 1;
+        my @item = (split('\* ', $_));
+        say '[/list]' if ($ulist > length($item[0])+1);
+        say '[list]' if ($ulist < length($item[0])+1);
+        $ulist = length($item[0])+1;
     }
 
     if (m/^ *[0-9]+\. /)
     {
-        say '[olist]' if (not $olist);
-        $olist = 1;
+        my @item = (split('[0-9]+\.', $_));
+        say '[/olist]' if ($olist > length($item[0])+1);
+        say '[olist]' if ($olist < length($item[0])+1);
+        $olist = length($item[0])+1;
     }
 
     if (m/^> /)
