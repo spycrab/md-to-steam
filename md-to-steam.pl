@@ -4,7 +4,6 @@
 # Licensed under a MIT License. See LICENSE
 
 # TODO:
-# Add link support
 # Add image support
 # Add file input option
 # Add quiet option
@@ -61,6 +60,7 @@ while (<>)
     s/(?!\[)[\*_](.*?)[\*_]/\[i\]$1\[\/i\]/; # Italic text
     s/(?!``)`(.*?)`/\[i\]$1\[\/i\]/; # There are no inline codetags in steam's markup so I use italic instead
     s/~~(.*?)~~/\[strike\]$1\[\/strike\]/; # Strike out
+    s/(?!\!)\[(.*?)\]\((.*?)\)/\[url=$2\]$1\[\/url\]/; # Links
 
     print;
 }
