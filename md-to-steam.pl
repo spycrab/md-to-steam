@@ -20,45 +20,31 @@ while (<>)
     # both
     if (m/```.*?/)
     {
-        say '[code]' if (not $code);
-        say '[/code]' if ($code);
+        if (not $code) { say '[/code]'; }
+        else           { say '[/code]'; }
         $code = !$code;
     }
     
     # end tags
-    unless (m/^> /)
-    {
-        say '[/quote]' if ($quote);
-        $quote = 0;
-    }
-
-    unless (m/^ *\* /)
-    {
-        say '[/list]' if ($ulist);
-        $ulist = 0;
-    }
-
-    unless (m/^ *[0-9]+\. /)
-    {
-        say '[/olist]' if ($olist);
-        $olist = 0;
-    }
+    unless (m/^> /) { say '[/quote]' if ($quote); $quote = 0; }
+    unless (m/^ *\* /)  { say '[/list]' if ($ulist);  $ulist = 0; }
+    unless (m/^ *[0-9]+\. /) { say '[/olist]' if ($olist); $olist = 0; }
 
     # begin tags
     if (m/^ *\* /)
     {
-        my @item = (split('\* ', $_));
-        say '[/list]' if ($ulist > length($item[0])+1);
-        say '[list]' if ($ulist < length($item[0])+1);
-        $ulist = length($item[0])+1;
+        my $tab_len = length((split('\* ', $_))[0])/2+1;
+        say '[/list]' if ($ulist > $tab_len);
+        say '[list]' if ($ulist < $tab_len);
+        $ulist = $tab_len;
     }
 
     if (m/^ *[0-9]+\. /)
     {
-        my @item = (split('[0-9]+\.', $_));
-        say '[/olist]' if ($olist > length($item[0])+1);
-        say '[olist]' if ($olist < length($item[0])+1);
-        $olist = length($item[0])+1;
+        my $tab_len = length((split('[0-9]+\.', $_))[0])/2+1;
+        say '[/olist]' if ($olist > $tab_len);
+        say '[olist]' if ($olist < $tab_len);
+        $olist = $tab_len;
     }
 
     if (m/^> /)
