@@ -19,7 +19,7 @@ while (<>)
     # both
     if (m/```.*?/)
     {
-        if (not $code) { say '[/code]'; }
+        if (not $code) { say '[code]'; }
         else           { say '[/code]'; }
         $code = !$code;
     }
